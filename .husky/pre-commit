@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Running pre-commit checks..."
+
+# Format check
+npm run format:check
+if [ $? -ne 0 ]; then
+  echo "  ✖ Prettier check failed. Run 'npm run format' to fix."
+  exit 1
+fi
+
+# Lint
+npm run lint
+if [ $? -ne 0 ]; then
+  echo "  ✖ ESLint check failed. Run 'npm run lint:fix' to attempt auto-fix."
+  exit 1
+fi
+
+echo "  ✔ All pre-commit checks passed."

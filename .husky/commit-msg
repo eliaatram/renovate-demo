@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Validate conventional commit format
+commit_msg=$(cat "$1")
+
+pattern="^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\(.+\))?(!)?: .{1,100}$"
+
+if ! echo "$commit_msg" | grep -qP "$pattern"; then
+  echo ""
+  echo "  ✖ Invalid commit message format!"
+  echo ""
+  echo "  Expected format: <type>(<scope>): <description>"
+  echo ""
+  echo "  Valid types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert"
+  echo ""
+  echo "  Examples:"
+  echo "    feat(auth): add login endpoint"
+  echo "    fix: handle null user response"
+  echo "    chore(deps): update axios to 1.7.0"
+  echo ""
+  exit 1
+fi
