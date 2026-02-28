@@ -1,0 +1,89 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
+  "extends": [
+    "config:recommended"
+  ],
+
+  // ── Who to notify ───────────────────────────────────────────────────────────
+  // Assign PRs to yourself so they show up in your review queue
+  "assignees": ["eliaatram"],
+
+  // Add a label to every Renovate PR — makes them easy to filter
+  "labels": ["dependencies"],
+
+  // ── PR limits ───────────────────────────────────────────────────────────────
+  // Avoid PR spam: no more than 5 open Renovate PRs at a time
+  "prConcurrentLimit": 5,
+
+  // Only open PRs on Monday mornings — keeps the rest of the week clean
+  "schedule": ["before 6am on Monday"],
+
+  // ── Semver strategy ─────────────────────────────────────────────────────────
+  // Keep major bumps in their own PR — they may have breaking changes
+  "separateMajorMinor": true,
+
+  // ── Package rules ───────────────────────────────────────────────────────────
+  // Rules are evaluated top-to-bottom; first match wins
+  "packageRules": [
+
+    // 1. Group all minor + patch updates into ONE PR
+    //    → reduces noise, easy to review together
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchDepTypes": ["dependencies"],
+      "groupName": "production dependencies (minor + patch)",
+      "groupSlug": "prod-minor-patch"
+    },
+
+    // 2. Major updates for production deps → individual PR + review label
+    //    → students must review changelog before merging
+    {
+      "matchUpdateTypes": ["major"],
+      "matchDepTypes": ["dependencies"],
+      "labels": ["dependencies", "major-update"],
+      "addLabels": ["needs-review"],
+      "prPriority": 5
+    },
+
+    // 3. Dev dependencies (minor + patch) → automerge when CI passes
+    //    → safe because devDeps don't ship to production
+    //    → this is the payoff: CI pipeline from earlier lesson does the work
+    {
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "dev dependencies (minor + patch)",
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    },
+
+    // 4. TypeScript itself: hold off on major bumps, require manual review
+    {
+      "matchPackageNames": ["typescript"],
+      "matchUpdateTypes": ["major"],
+      "enabled": true,
+      "addLabels": ["needs-review", "typescript-major"]
+    },
+
+    // 5. GitHub Actions versions — keep them updated too
+    {
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions",
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    }
+  ],
+
+  // ── Commit message format ────────────────────────────────────────────────────
+  // Renovate will generate commits that match our conventional commits setup!
+  "commitMessagePrefix": "chore(deps):",
+  "commitMessageAction": "update",
+
+  // ── Dependency Dashboard ────────────────────────────────────────────────────
+  // Creates a special issue in your repo listing all pending updates
+  // You can trigger individual PRs from there by checking a box
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "🤖 Renovate Dependency Dashboard"
+}
