@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/eliaatram/renovate-demo/compare/v1.1.0...v1.2.0) (2026-03-02)
+
+
+### Features
+
+* pushing docker image to ghcr ([b062981](https://github.com/eliaatram/renovate-demo/commit/b062981110f6e327952b4205dca9164a06781ae7))
+
 # [1.1.0](https://github.com/eliaatram/renovate-demo/compare/v1.0.0...v1.1.0) (2026-03-02)
 
 
