@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/eliaatram/renovate-demo/compare/v1.0.0...v1.1.0) (2026-03-02)
+
+
+### Features
+
+* added docker ([6f261cc](https://github.com/eliaatram/renovate-demo/commit/6f261cca4ad892b54ac8285a50f2bfba1218f8b5))
+
 # 1.0.0 (2026-02-28)
 
 
