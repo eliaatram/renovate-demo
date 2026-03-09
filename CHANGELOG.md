@@ -1,3 +1,11 @@
+# [1.2.0](https://github.com/eliaatram/renovate-demo/compare/v1.1.0...v1.2.0) (2026-03-09)
+
+
+### Features
+
+* add railway staging deployment ([38e71ff](https://github.com/eliaatram/renovate-demo/commit/38e71ff211031c96f28f30c5c02218f96520c140))
+* pushing docker image to ghcr ([2ce0887](https://github.com/eliaatram/renovate-demo/commit/2ce0887dcb133f84d5bc6308b78c412dde9198cf))
+
 # [1.2.0](https://github.com/eliaatram/renovate-demo/compare/v1.1.0...v1.2.0) (2026-03-02)
 
 
