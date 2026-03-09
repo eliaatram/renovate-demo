@@ -149,3 +149,31 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [docker]
+    environment:
+      name: staging
+      url: ${{ vars.RAILWAY_STAGING_URL }}
+
+    steps:
+      - name: Deploy image to Railway staging
+        run: |
+          SHA_TAG=$(echo "${{ needs.docker.outputs.image }}" \
+            | tr ',' '\n' \
+            | grep 'sha-' \
+            | head -1 \
+            | xargs)
+
+          echo "Deploying image tag: $SHA_TAG"
+
+          curl -s -X POST \
+            -H "Authorization: Bearer ${{ secrets.RAILWAY_TOKEN }}"
+            -H "Content-type: application/json" \
+            -d "{
+            \"query\": \"mutation { serviceInstanceRedeploy(serviceId: \\\"${{ secrets.RAILWAY_SERVICE_ID }}\\\", environmentId: \\\"${{ secrets.RAILWAY_ENVIRONMENT_ID }}\\\") }\"
+            }" \
+            https://backboard.railway.app/graphql/v2
+
+          echo "Staging deployment triggered"
